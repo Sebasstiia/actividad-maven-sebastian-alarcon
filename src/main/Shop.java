@@ -227,8 +227,11 @@ public class Shop {
 		// TODO RA1-ISSUE-03: obrir el fitxer, llegir-lo linia a linia i afegir cada producte a inventory.
 		try {
 			BufferedReader bf = new BufferedReader(new FileReader(f));
-			String Linea = "";
-			while(Linea = bf.readLine() != null)
+			String linea;
+			//while ((linea = bf.readLine()) != null) {
+				
+			//}
+			
 			{
 				
 			}
