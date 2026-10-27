@@ -232,6 +232,11 @@ public class Shop {
 			
 	        while ((linea = bf.readLine()) != null) {
 	            Product product = parseProductLine(linea);
+	            
+	            if (product != null) {
+	                addProduct(product);
+	            }
+	        
 	        	}
 	    }
 	         catch (IOException e) {
@@ -248,11 +253,63 @@ public class Shop {
 	/**
 	 * Convert a valid line from items.txt into a Product.
 	 */
-	private Product parseProductLine(String line) {
-		// TODO RA1-ISSUE-04: validar camps, convertir preu i estoc, i retornar un Product.
-		// TODO RA1-ISSUE-05: decidir com es tracten les linies mal formades.
-		return null;
-	}
+
+   private Product parseProductLine(String line) {
+    if (line == null || line.trim().isEmpty()) {
+        return null;
+    }
+
+    String name = null;
+    Double price = null;
+    Integer stock = null;
+
+    String[] camps = line.split(";");
+
+    try {
+        for (String camp : camps) {
+            String[] parts = camp.split(":", 2);
+
+            if (parts.length != 2) {
+                return null;
+            }
+
+            String key = parts[0].trim();
+            String value = parts[1].trim();
+
+            if (value.isEmpty()) {
+                return null;
+            }
+
+            switch (key) {
+                case "Item":
+                    name = value;
+                    break;
+
+                case "Wholesaler Price":
+                    price = Double.parseDouble(value);
+                    break;
+
+                case "Stock":
+                    stock = Integer.parseInt(value);
+                    break;
+
+                default:
+                    return null;
+            }
+        }
+
+        if (name == null || name.isEmpty()
+                || price == null || stock == null
+                || price < 0 || stock < 0) {
+            return null;
+        }
+
+        return new Product(name, new Amount(price), true, stock);
+
+    } catch (NumberFormatException e) {
+        return null;
+    }
+}
 
 	/**
 	 * Save the current inventory to items.txt.
