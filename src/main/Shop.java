@@ -257,18 +257,32 @@ public class Shop {
 	    String[] camps = line.split(";");
 
 	    try {
-	        String[] clauValor = camps[0].split(":", 2);
+	        String nom = camps[0].split(":", 2)[1].trim();
+	        double preu = Double.parseDouble(camps[1].split(":", 2)[1].trim());
+	        int estoc = Integer.parseInt(camps[2].split(":", 2)[1].trim());
 
-	        String nom = "SSD 1TB";
-	        double preu = Double.parseDouble("60.00");
-	        int estoc = Integer.parseInt("abc");
-	        
-	        Product producte = new Product(nom, new Amount(preu), true, estoc);
+	        if (nom.equals("")) {
+	            System.out.println("El nombre esta vacio");
+	            return null;
+	        }
 
-	        return producte;
+	        if (preu < 0) {
+	            System.out.println("El precio no puede ser negativo");
+	            return null;
+	        }
+
+	        if (estoc < 0) {
+	            System.out.println("El stock no puede ser negativo");
+	            return null;
+	        }
+
+	        return new Product(nom, new Amount(preu), true, estoc);
 
 	    } catch (NumberFormatException e) {
-	        System.out.println("Error en el stock");
+	        System.out.println("Error en el preu o l'estoc");
+	        return null;
+	    } catch (ArrayIndexOutOfBoundsException e) {
+	        System.out.println("Falten dades");
 	        return null;
 	    }
 	}
