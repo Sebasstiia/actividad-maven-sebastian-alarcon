@@ -254,21 +254,25 @@ public class Shop {
 	 * Convert a valid line from items.txt into a Product.
 	 */
 	private Product parseProductLine(String line) {
-		// TODO RA1-ISSUE-04: validar camps, convertir preu i estoc, i retornar un Product.
-		String[] camps = line.split(";");
-		String[] clauValor = camps[0].split(":", 2);
-		
-		String nom = "SSD 1TB";
-		double preu = Double.parseDouble("60.00");
-		int estoc = Integer.parseInt("8");
-		
-		Product producte = new Product(nom, new Amount(preu), true,estoc);
-		
-		// TODO RA1-ISSUE-05: decidir com es tracten les linies mal formades.
-		
-		return producte;
-	}
+	    String[] camps = line.split(";");
 
+	    try {
+	        String[] clauValor = camps[0].split(":", 2);
+
+	        String nom = "SSD 1TB";
+	        double preu = Double.parseDouble("60.00");
+	        int estoc = Integer.parseInt("abc");
+	        
+	        Product producte = new Product(nom, new Amount(preu), true, estoc);
+
+	        return producte;
+
+	    } catch (NumberFormatException e) {
+	        System.out.println("Error en el stock");
+	        return null;
+	    }
+	}
+ 
 	/**
 	 * Save the current inventory to items.txt.
 	 */
